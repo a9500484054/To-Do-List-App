@@ -50,9 +50,7 @@
     };
   });
 
-  // 'button--primary': props.primary,
-  //   'button--outlined': props.outlined,
-  //   'button--icon-only': props.iconOnly,
+
   
   </script>
   
