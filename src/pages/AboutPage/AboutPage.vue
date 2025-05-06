@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="row">
       <div class="col-12">
-        <h1 class="mb-4">О приложении</h1>
+        <!-- <h1 class="mb-4">О приложении</h1> -->
         
         <Card 
           title="GameSport To-Do List App"

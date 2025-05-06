@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
   position: fixed;
   max-width: 300px;
   width: 100%;
-  background-color: var(--card-bg);
+  background-color: var(--sidbar-bg-color);
   padding: 20px;
   height: 100vh;
   top: 0;

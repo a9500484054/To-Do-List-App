@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="row">
       <div class="col-12">
-        <h1 class="mb-4 settings-title">Настройки</h1>
+        <!-- <h1 class="mb-4 settings-title">Настройки</h1> -->
         <Card title="Внешний вид" class="mb-4">
           <div class="settings-group">
             <div class="settings-item">
@@ -125,6 +125,8 @@ const handleImport = (event) => {
     color: var(--text-color);
   }
 
+
+  
   .settings-group {
     display: flex;
     flex-direction: column;
