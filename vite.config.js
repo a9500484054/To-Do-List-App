@@ -10,4 +10,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  base: '/To-Do-List-App/' // Замените REPO-NAME на название вашего репозитория
 });
