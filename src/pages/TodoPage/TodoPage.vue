@@ -13,15 +13,17 @@
         />
         
         <Card>
-          <div class="d-flex justify-content-between align-items-center" style="padding: 20px;">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center" style="padding: 20px;">
             <div class="h4 p-0">Сделано дел: {{ completedTasks }} из {{ totalTasks }}</div>
-            <div>
+            <div class="mt-3 mt-md-0">
               <Button
                 @click="showAddModal = true"
-                label="Добавить задачу" 
-                icon="mdi:plus" 
+                label="Добавить задачу"
+                icon="mdi:plus"
                 outlined
-                size="m"/>
+                size="m"
+                class="btn-responsive"
+              />
             </div>
           </div>
   
@@ -153,3 +155,43 @@ const confirmDeleteTask = () => {
 
   
 </style>
+<!-- 
+<style scoped>
+.container {
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.h4 {
+  font-size: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .h4 {
+    font-size: 1.25rem;
+  }
+
+  .btn-responsive {
+    width: 100%;
+  }
+}
+
+/* Анимация для offcanvas (выезжает справа) */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+</style> -->

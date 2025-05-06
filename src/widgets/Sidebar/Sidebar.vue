@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
   left: 0;
   overflow-y: auto;
   padding-top: 120px;
-  z-index: 1000;
+  /* z-index: 1000; */
   transition: transform 0.3s ease;
 }
 
