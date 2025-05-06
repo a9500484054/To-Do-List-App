@@ -100,7 +100,6 @@ const onChange = (event) => {
   user-select: none;
 }
 
-/* Размеры */
 .checkbox.small .checkbox-input {
   width: 0.8em;
   height: 0.8em;

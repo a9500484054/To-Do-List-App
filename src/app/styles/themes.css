@@ -1,0 +1,45 @@
+:root {
+  /* Светлая тема (по умолчанию) */
+  --bg-color: #f6f6f6;
+  --text-color: #333333;
+  --card-bg: #fff;
+  --border-color: #e0e0e0;
+  --hover-color: #f0f0f0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --primary-color: #ff365f;
+  --primary-hover: #ff1a4a;
+  --success-color: #7bd08f;
+  --error-color: #e66e79;
+  --info-color: #5dbdce;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #333333;
+  --card-bg: #2d2d2d;
+  --border-color: #404040;
+  --hover-color: #3d3d3d;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --primary-color: #ff365f;
+  --primary-hover: #ff1a4a;
+  --success-color: #1e4620;
+  --error-color: #4a1c1c;
+  --info-color: #1c3a3d;
+}
+
+body {
+  background-color: var(--bg-color) !important;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bg-danger {
+  background-color: var(--error-color) !important;
+}
+.bg-warning {
+  background-color: var(--info-color) !important;
+
+}
+.bg-success {
+  background-color: var(--success-color) !important;
+
+}

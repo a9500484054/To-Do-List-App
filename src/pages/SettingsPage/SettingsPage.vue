@@ -1,20 +1,89 @@
+<template>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="mb-4 settings-title">Настройки</h1>
+        <Card title="Внешний вид" class="mb-4">
+          <div class="settings-group">
+            <div class="settings-item">
+              <div class="settings-label">
+                <span>Тема</span>
+                <span class="settings-value">{{ theme === 'light' ? 'Светлая' : 'Темная' }}</span>
+              </div>
+              <div class="theme-switch" @click="toggleTheme">
+                <div class="theme-switch__track" :class="{ 'theme-switch__track--active': theme === 'dark' }">
+                  <div class="theme-switch__thumb" :class="{ 'theme-switch__thumb--active': theme === 'dark' }">
+                    <i :class="theme === 'light' ? 'mdi:weather-sunny' : 'mdi:weather-night'" class="theme-icon"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+        
+        <Card title="Язык" class="mb-4">
+          <div class="settings-group">
+            <div class="settings-item">
+              <div class="settings-label">
+                <span>Язык интерфейса</span>
+                <span class="settings-value">Русский</span>
+              </div>
+            </div>
+          </div>
+        </Card>
+        
+        <Card title="Импорт/Экспорт">
+          <div class="settings-group">
+            <div class="settings-item">
+              <div class="settings-label">
+                <span>Экспорт задач</span>
+                <span class="settings-description">Скачайте все задачи в JSON формате</span>
+              </div>
+              <button class="settings-button" @click="handleExport">
+                <i class="mdi:download"></i>
+                Экспорт
+              </button>
+            </div>
+            
+            <div class="settings-item">
+              <div class="settings-label">
+                <span>Импорт задач</span>
+                <span class="settings-description">Загрузите задачи из JSON файла</span>
+              </div>
+              <div class="file-upload">
+                <input
+                  type="file"
+                  class="file-input"
+                  accept=".json"
+                  @change="handleImport"
+                  id="file-upload"
+                />
+                <label for="file-upload" class="settings-button">
+                  <i class="mdi:upload"></i>
+                  Импорт
+                </label>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { useTasksStore } from '@/app/store/tasks';
+import Card from '@/shared/components/Card/Card.vue';
 
 const tasksStore = useTasksStore();
 const theme = ref(localStorage.getItem('theme') || 'light');
-const language = ref(localStorage.getItem('language') || 'ru');
 
-const handleThemeChange = (newTheme) => {
+const toggleTheme = () => {
+  const newTheme = theme.value === 'light' ? 'dark' : 'light';
   theme.value = newTheme;
   localStorage.setItem('theme', newTheme);
   document.documentElement.setAttribute('data-theme', newTheme);
-};
-
-const handleLanguageChange = (newLanguage) => {
-  language.value = newLanguage;
-  localStorage.setItem('language', newLanguage);
 };
 
 const handleExport = () => {
@@ -47,54 +116,136 @@ const handleImport = (event) => {
 };
 </script>
 
-<template>
-  <div class="container mt-4">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="mb-4">Настройки</h1>
-        
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Внешний вид</h5>
-            <div class="mb-3">
-              <label class="form-label">Тема</label>
-              <select class="form-select" v-model="theme" @change="handleThemeChange">
-                <option value="light">Светлая</option>
-                <option value="dark">Темная</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">Язык</h5>
-            <div class="mb-3">
-              <select class="form-select" v-model="language" @change="handleLanguageChange">
-                <option value="ru">Русский</option>
-                <option value="en">English</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Импорт/Экспорт</h5>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary" @click="handleExport">
-                Экспорт задач
-              </button>
-              <input
-                type="file"
-                class="form-control"
-                accept=".json"
-                @change="handleImport"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template> 
+<style scoped>
+  .container {
+    padding-top: 80px;
+  }
+
+  h1 {
+    color: var(--text-color);
+  }
+
+  .settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .settings-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .settings-value {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
+  .settings-description {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
+  .theme-switch {
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .theme-switch__track {
+    width: 60px;
+    height: 30px;
+    background-color: var(--border-color);
+    border-radius: 15px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .theme-switch__track--active {
+    background-color: var(--primary-color);
+  }
+
+  .theme-switch__thumb {
+    width: 26px;
+    height: 26px;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-switch__thumb--active {
+    transform: translateX(30px);
+  }
+
+  .theme-icon {
+    font-size: 1rem;
+    color: var(--text-color);
+  }
+
+  .settings-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .settings-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .settings-button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .file-upload {
+    position: relative;
+  }
+
+  .file-input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  @media (max-width: 768px) {
+    .settings-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .settings-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style> 

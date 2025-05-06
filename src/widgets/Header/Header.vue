@@ -4,15 +4,15 @@
       <div class="header__logo">
         <router-link to="/" aria-label="Перейти на главную страницу">
           <Logo 
-            :src="logoPath" 
-            :alt="logoAlt" 
+            text="To-Do List App"
             :width="logoWidth" 
             :height="logoHeight" 
+            hideImage
           />
         </router-link>  
       </div>
 
-      <Burger @toggle="handleMenuToggle" />
+      <Burger @toggle="handleMenuToggle"/>
 
       <nav 
         class="header__nav" 
@@ -48,10 +48,8 @@ import { Logo, Burger } from '@/shared/components';
 const route = useRoute();
 const isMenuOpen = ref(false);
 
-const logoPath = ref('./src/app/assets/logo.jpg');
-const logoAlt = ref('Сервис ToDo');
-const logoWidth = ref('200px');
-const logoHeight = ref('50px');
+const logoWidth = ref('auto');
+const logoHeight = ref('auto');
 
 const links = [
   { text: 'Главная', url: '/' },
@@ -70,99 +68,107 @@ const closeMenu = () => {
 const activeLink = computed(() => links.find(link => link.url === route.path));
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .header {
-  padding: 1rem 2rem;
+  padding: 2rem 1rem;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 61;
   position: fixed;
   width: 100%;
-  top:0;
+  top: 0;
   left: 0;
-  background-color: #fff;
-  
-  &__wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-    position: relative;
-  }
-  
-  &__logo {
-    z-index: 10000;
-  }
-  
-  &__nav {
-    &-list {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    @media (max-width: 768px) {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background-color: #fff;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      
-      &--active {
-        transform: translateX(0);
-      }
-      
-      &-list {
-        flex-direction: column;
-        gap: 30px;
-      }
-    }
-  }
+  background-color: var(--bg-color);
+}
+
+.header__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.header__logo {
+  z-index: 10000;
+}
+
+.header__controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.header__nav-list {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333;
   font-weight: 500;
   transition: color 0.3s ease;
   font-size: 1rem;
-  
-  &:hover {
-    color: #ff365f;
-  }
-  
-  &[aria-current="page"] {
-    color: #ff365f;
-    font-weight: 600;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
+}
+
+.nav-link:hover {
+  color: var(--primary-hover);
+}
+
+.nav-link:focus, .nav-link:hover {
+  color: var(--primary-hover);
+}
+
+.nav-link[aria-current="page"] {
+  font-weight: 600;
+  color: var(--primary-hover);
+
 }
 
 @media (max-width: 768px) {
   .header {
     padding: 1rem;
-    
-    &__logo {
-      img {
-        width: 150px;
-        height: auto;
-      }
-    }
   }
-  
+
+  .header__logo img {
+    width: 150px;
+    height: auto;
+  }
+
+  .header__nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-color);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 61;
+  }
+
+  .header__nav--active {
+    transform: translateX(0);
+    color: var(--primary-color);
+  }
+
+  .header__nav-list {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+  }
+
   .header__nav:not(.header__nav--active) {
     display: none;
   }

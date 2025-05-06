@@ -46,19 +46,20 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useToast } from 'vue-toastification';
 import {
   TextField,
   RadioGroup,
   Button
 } from '../../../shared/components';
 
+const toast = useToast();
 const emit = defineEmits(['close', 'save']);
 
 const title = ref('');
 const priority = ref('Низкий');
 const titleFontSize = ref('1.5rem');
 
-// Реактивная переменная для управления размером
 const inputSize = ref('large');
 
 const handleSubmit = () => {
@@ -69,10 +70,26 @@ const handleSubmit = () => {
     });
     title.value = '';
     priority.value = 'Низкий';
+    toast.success('Задача успешно добавлена!', {
+      position: 'top-right',
+      timeout: 3000,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: true,
+      draggable: true,
+      draggablePercent: 0.6,
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: 'button',
+      icon: true,
+      rtl: false,
+      transition: 'Vue-Toastification__bounce',
+      maxToasts: 5,
+      newestOnTop: true
+    });
   }
 };
 
-// Функция для обновления размера в зависимости от ширины экрана
 const updateInputSize = () => {
   if (window.innerWidth < 768) {
     inputSize.value = 'medium';
@@ -81,7 +98,6 @@ const updateInputSize = () => {
   }
 };
 
-// Обновление размера при монтировании компонента и изменении размера окна
 onMounted(() => {
   updateInputSize();
   window.addEventListener('resize', updateInputSize);
@@ -92,26 +108,25 @@ onUnmounted(() => {
 });
 </script>
 
-
 <style scoped>
 .offcanvas {
-  width: 90vw; /* Default width for mobile devices */
-  width: 100% !important; /* Maximum width for larger screens */
+  width: 90vw;
+  width: 100% !important;
 }
 
 .offcanvas-header {
-  border-bottom: 1px solid #b6b6b6 !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
-@media (min-width: 768px) {
+@media(min-width: 768px) {
   .offcanvas {
-    width: 35vw !important; /* Adjust width for larger screens */
+    width: 35vw !important;
   }
 }
 
-@media (min-width: 1024px) {
+@media(min-width: 1024px) {
   .offcanvas {
-    width: 35vw !important; /* Further adjust width for even larger screens */
+    width: 35vw !important;
   }
 }
 </style>

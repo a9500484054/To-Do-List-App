@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 export const useTasksStore = defineStore('tasks', {
   state: () => ({
     tasks: JSON.parse(localStorage.getItem('tasks')) || [],
-    filter: 'all', // 'all', 'active', 'completed'
-    priorityFilter: 'all', // 'all', 'high', 'medium', 'low'
+    filter: 'all', 
+    priorityFilter: 'all', 
     searchQuery: '',
   }),
   
@@ -12,19 +12,16 @@ export const useTasksStore = defineStore('tasks', {
     filteredTasks: (state) => {
       let filtered = state.tasks;
       
-      // Фильтрация по статусу
       if (state.filter === 'active') {
         filtered = filtered.filter(task => !task.completed);
       } else if (state.filter === 'completed') {
         filtered = filtered.filter(task => task.completed);
       }
       
-      // Фильтрация по приоритету
       if (state.priorityFilter !== 'all') {
         filtered = filtered.filter(task => task.priority === state.priorityFilter);
       }
       
-      // Поиск по названию
       if (state.searchQuery) {
         const query = state.searchQuery.toLowerCase();
         filtered = filtered.filter(task => 

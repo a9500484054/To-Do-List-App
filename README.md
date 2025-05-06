@@ -1,5 +1,60 @@
-# Vue 3 + Vite
+# To-Do List App
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Приложение для управления задачами, разработанное с использованием Vue 3 и Vite.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Функциональность
+
+- Создание, редактирование и удаление задач
+- Отметка задач как выполненных
+- Установка приоритета задач (Высокий, Средний, Низкий)
+- Адаптивный дизайн для всех устройств
+- Уведомления о действиях с задачами
+- Темная/светлая тема
+- Сохранение задач в локальном хранилище
+
+## Технологии
+
+- Vue 3
+- Vite
+- Vue Router
+- Pinia (для управления состоянием)
+- Vue Toastification (для уведомлений)
+- SCSS (для стилей)
+- Bootstrap (для базовых стилей)
+
+## Требования
+
+- Node.js 
+- npm или yarn
+
+## Установка и запуск
+
+1. Клонируйте репозиторий:
+```bash
+git clone [url-репозитория]
+cd [название-папки-проекта]
+```
+
+2. Установите зависимости:
+```bash
+npm install
+# или
+yarn install
+```
+
+3. Запустите приложение в режиме разработки:
+```bash
+npm run dev
+# или
+yarn dev
+```
+
+4. Для сборки production-версии:
+```bash
+npm run build
+# или
+yarn build
+```
+
+
+

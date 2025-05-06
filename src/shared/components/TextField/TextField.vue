@@ -90,7 +90,6 @@ const sizeClass = computed(() => `size-${props.size}`);
   transition: all 0.3s ease;
 }
 
-/* Размеры */
 .size-small .text-field-input {
   font-size: 0.875em;
   padding: 0.375em 0.5em;
@@ -135,7 +134,6 @@ const sizeClass = computed(() => `size-${props.size}`);
   color: #ff365f;
 }
 
-/* Дополнительные стили для лучшего UX */
 .text-field-input:hover:not(:disabled) {
   border-color: #b3b3b3;
 }

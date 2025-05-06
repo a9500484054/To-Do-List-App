@@ -1,5 +1,5 @@
 @import './normalize.css';
-
+@import './themes.css';
 
 * {
     margin: 0;
@@ -14,8 +14,24 @@ body {
   margin: 0 auto;
   background-color:#f6f6f6;
   color: #333;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
 }
-  
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
 h1,h2,h3,h4,h5 {
   margin: 0;
 }
@@ -79,23 +95,4 @@ input[type="radio"].visually-hidden {
   overflow: hidden;
 }
 
-body {
-  scrollbar-width: thin;
-  scrollbar-color: #c1c1c1 #f1f1f1;
-}
 
-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-body::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 4px;
-}
-
-  

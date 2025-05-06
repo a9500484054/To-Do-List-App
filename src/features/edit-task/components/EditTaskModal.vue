@@ -48,12 +48,14 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { useToast } from 'vue-toastification';
 import { 
   TextField,
   RadioGroup,
   Button
 } from '../../../shared/components';
 
+const toast = useToast();
 
 const props = defineProps({
   task: {
@@ -81,10 +83,26 @@ const handleSubmit = () => {
       title: title.value.trim(),
       priority: priority.value,
     });
+    toast.success('Задача успешно отредактирована!', {
+      position: 'top-right',
+      timeout: 3000,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: true,
+      draggable: true,
+      draggablePercent: 0.6,
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: 'button',
+      icon: true,
+      rtl: false,
+      transition: 'Vue-Toastification__bounce',
+      maxToasts: 5,
+      newestOnTop: true
+    });
   }
 };
 
-// Функция для обновления размера в зависимости от ширины экрана
 const updateInputSize = () => {
   if (window.innerWidth < 768) {
     inputSize.value = 'medium';
@@ -93,7 +111,6 @@ const updateInputSize = () => {
   }
 };
 
-// Обновление размера при монтировании компонента и изменении размера окна
 onMounted(() => {
   updateInputSize();
   window.addEventListener('resize', updateInputSize);
@@ -106,22 +123,22 @@ onUnmounted(() => {
 
 <style scoped>
 .offcanvas {
-  width: 100% !important; /* Maximum width for larger screens */
+  width: 100% !important; 
 }
 
 .offcanvas-header {
   border-bottom: 1px solid #b6b6b6 !important;
 }
 
-@media (min-width: 768px) {
+@media(min-width: 768px) {
   .offcanvas {
-    width: 35vw !important; /* Adjust width for larger screens */
+    width: 35vw !important; 
   }
 }
 
-@media (min-width: 1024px) {
+@media(min-width: 1024px) {
   .offcanvas {
-    width: 35vw !important; /* Further adjust width for even larger screens */
+    width: 35vw !important; 
   }
 }
 </style>

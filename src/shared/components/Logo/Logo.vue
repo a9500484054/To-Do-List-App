@@ -1,18 +1,19 @@
 <template>
     <div class="logo" :style="{ width: width, height: height }">
       <img
+        v-if="!hideImage"
         :src="src"
         :alt="alt"
         class="logo-image"
         :style="{ width: '100%', height: '100%' }"
       />
+      <span v-if="text" class="logo-text">{{ text }}</span>
     </div>
   </template>
   
-  <script setup>
+<script setup>
   import { defineProps } from 'vue';
   
-  // Определяем пропсы, которые компонент принимает
   const props = defineProps({
     src: {
       type: String,
@@ -33,19 +34,36 @@
       type: String,
       default: '50px',
       description: 'Размер логотипа (например, "50px")'
+    },
+    text: {
+      type: String,
+      default: '',
+      description: 'Текст рядом с логотипом'
+    },
+    hideImage: {
+      type: Boolean,
+      default: false,
+      description: 'Скрыть изображение логотипа'
     }
   });
-  </script>
+</script>
   
-  <style scoped>
+<style scoped lang="scss">
   .logo {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
   }
   
   .logo-image {
     object-fit: contain;
   }
-  </style>
+
+  .logo-text {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+</style>
   

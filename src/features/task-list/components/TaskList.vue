@@ -6,7 +6,7 @@
 
     <div v-else class="task-list__list">
       <div
-        v-for="task in [...tasks].reverse()"
+        v-for="task in paginatedTasks"
         :key="task.id"
         class="task-list__item"
       >
@@ -17,7 +17,7 @@
                 :id="'task-' + task.id"
                 :checked="task.completed"
                 :label="task.title"
-                @change="$emit('toggle', task.id)"
+                @change="handleTaskToggle(task)"
                 class="mb-2 mb-md-0 me-md-2"
               />
             </div>
@@ -51,21 +51,114 @@
           </div>
         </div>
       </div>
+      
+      <div v-if="hasMoreTasks" class="text-center mt-3">
+        <Button
+          @click="loadMore"
+          label="Загрузить еще"
+          outlined
+          size="m"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { Task, Button } from '../../../shared/components';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useToast } from 'vue-toastification';
 
-defineProps({
+const toast = useToast();
+
+const props = defineProps({
   tasks: {
     type: Array,
     required: true,
   },
 });
 
-defineEmits(['toggle', 'edit', 'delete']);
+const emit = defineEmits(['toggle', 'edit', 'delete']);
+
+const itemsPerPage = 10;
+const currentPage = ref(1);
+
+const paginatedTasks = computed(() => {
+  const start = 0;
+  const end = currentPage.value * itemsPerPage;
+  return [...props.tasks].reverse().slice(start, end);
+});
+
+const hasMoreTasks = computed(() => {
+  return props.tasks.length > currentPage.value * itemsPerPage;
+});
+
+const loadMore = () => {
+  if (hasMoreTasks.value) {
+    currentPage.value += 1;
+  }
+};
+
+const handleTaskToggle = (task) => {
+  emit('toggle', task.id);
+  if (!task.completed) {
+    toast.info(`Задача "${task.title}" возвращена в работу`, {
+      position: 'top-right',
+      timeout: 3000,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: true,
+      draggable: true,
+      draggablePercent: 0.6,
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: 'button',
+      icon: true,
+      rtl: false,
+      transition: 'Vue-Toastification__bounce',
+      maxToasts: 5,
+      newestOnTop: true,
+      toastId: `task-${task.id}-returned`
+    });
+  } else {
+    toast.success(`Задача "${task.title}" выполнена!`, {
+      position: 'top-right',
+      timeout: 3000,
+      closeOnClick: true,
+      pauseOnFocusLoss: true,
+      pauseOnHover: true,
+      draggable: true,
+      draggablePercent: 0.6,
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: 'button',
+      icon: true,
+      rtl: false,
+      transition: 'Vue-Toastification__bounce',
+      maxToasts: 5,
+      newestOnTop: true,
+      toastId: `task-${task.id}-completed`
+    });
+  }
+};
+
+const handleScroll = () => {
+  const bottomOfWindow = 
+    document.documentElement.scrollTop + window.innerHeight >= 
+    document.documentElement.scrollHeight - 100;
+
+  if (bottomOfWindow && hasMoreTasks.value) {
+    loadMore();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,8 +1,8 @@
-
 <template>
   <div class="container mt-4">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 wrap">
+
 
         <Sidebar
           :current-filter="tasksStore.filter"
@@ -13,7 +13,7 @@
         />
         
         <Card>
-          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center" style="padding: 20px;">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center py-4 ">
             <div class="h4 p-0">Сделано дел: {{ completedTasks }} из {{ totalTasks }}</div>
             <div class="mt-3 mt-md-0">
               <Button
@@ -61,24 +61,42 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent, onMounted } from 'vue';
 import { useTasksStore } from '@/app/store/tasks';
-import AddTaskModal from '@/features/add-task/components/AddTaskModal.vue';
-import EditTaskModal from '@/features/edit-task/components/EditTaskModal.vue';
+import { useThemeStore } from '@/app/store/theme';
 import TaskList from '@/features/task-list/components/TaskList.vue';
 import Sidebar from '@/widgets/Sidebar/Sidebar.vue';
-import DeleteTaskModal from '@/features/delete-task/components/DeleteTaskModal.vue';
-import { Card, Button} from '@/shared/components'
+import { Card, Button } from '@/shared/components'
+
+
+
+const AddTaskModal = defineAsyncComponent(() => 
+  import('@/features/add-task/components/AddTaskModal.vue')
+);
+const EditTaskModal = defineAsyncComponent(() => 
+  import('@/features/edit-task/components/EditTaskModal.vue')
+);
+const DeleteTaskModal = defineAsyncComponent(() => 
+  import('@/features/delete-task/components/DeleteTaskModal.vue')
+);
 
 const tasksStore = useTasksStore();
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const editingTask = ref(null);
 
+const themeStore = useThemeStore();
 
-// Вычисляемые свойства для счетчиков задач
+onMounted(() => {
+  themeStore.initTheme();
+});
+
 const totalTasks = computed(() => tasksStore.tasks.length);
-const completedTasks = computed(() => tasksStore.tasks.filter(task => task.completed).length);
+const completedTasks = computed(() => {
+  return tasksStore.tasks.reduce((count, task) => 
+    task.completed ? count + 1 : count, 0
+  );
+});
 
 const handleAddTask = (task) => {
   tasksStore.addTask(task);
@@ -89,7 +107,6 @@ const handleEditTask = (task) => {
   tasksStore.editTask(task.id, task.title, task.priority);
   showEditModal.value = false;
 };
-
 
 const handleEditClick = (task) => {
   editingTask.value = task;
@@ -108,8 +125,6 @@ const handleSearch = (query) => {
   tasksStore.setSearchQuery(query);
 };
 
-
-
 const showDeleteModal = ref(false);
 const deletingTaskId = ref(null);
 
@@ -127,71 +142,33 @@ const confirmDeleteTask = () => {
 
 </script>
 
-
 <style scoped>
-.container {
-  max-width: 1140px;
-}
-</style> 
+  .container {
+    max-width: 1140px;
+  }
 
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all 0.3s ease-out;
+  }
 
-<style scoped>
-/* Анимация для offcanvas (выезжает справа) */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease-out;
-}
+  .slide-fade-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 
-.slide-fade-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
+  .slide-fade-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 
-.slide-fade-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
+  .wrap {
+    padding-left: 320px;
+  }
 
-
-  
+  @media (max-width: 768px) {
+    .wrap {
+      padding-left: 20px;
+    }
+  }
 </style>
-<!-- 
-<style scoped>
-.container {
-  max-width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.h4 {
-  font-size: 1.5rem;
-}
-
-@media (max-width: 767.98px) {
-  .h4 {
-    font-size: 1.25rem;
-  }
-
-  .btn-responsive {
-    width: 100%;
-  }
-}
-
-/* Анимация для offcanvas (выезжает справа) */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-.slide-fade-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
-</style> -->
