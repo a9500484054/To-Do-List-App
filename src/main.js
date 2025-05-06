@@ -3,9 +3,9 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './app/router';
 import { createPinia } from 'pinia';
-import './app/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Импорт стилей Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Импорт JavaScript Bootstrap (опционально)
+import './app/styles/main.css';
 
 const app = createApp(App);
 const pinia = createPinia();

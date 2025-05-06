@@ -42,7 +42,7 @@ export const useTasksStore = defineStore('tasks', {
         id: Date.now(),
         title: task.title,
         completed: false,
-        priority: task.priority || 'medium',
+        priority: task.priority || 'Низкий',
         createdAt: new Date().toISOString(),
       });
       this.saveToLocalStorage();
@@ -56,10 +56,11 @@ export const useTasksStore = defineStore('tasks', {
       }
     },
     
-    editTask(id, newTitle) {
+    editTask(id, newTitle, newPriority) {
       const task = this.tasks.find(t => t.id === id);
       if (task) {
         task.title = newTitle;
+        task.priority = newPriority;
         this.saveToLocalStorage();
       }
     },

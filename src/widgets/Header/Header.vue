@@ -1,76 +1,176 @@
 <template>
-  <header class="header">
-      <div class="header-logo">
-          <router-link to="/" class="nav-link">
-              <Logo src="./src/app/assets/ToDoList.svg" alt="Сервис ToDo" size="100px" />
-          </router-link>  
+  <header class="header" role="banner">
+    <div class="header__wrapper">
+      <div class="header__logo">
+        <router-link to="/" aria-label="Перейти на главную страницу">
+          <Logo 
+            :src="logoPath" 
+            :alt="logoAlt" 
+            :width="logoWidth" 
+            :height="logoHeight" 
+          />
+        </router-link>  
       </div>
 
-      <nav class="header-nav">
-          <ul class="nav-list">
-              <li v-for="link in links" :key="link.text" class="nav-item">
-                  <router-link :to="link.url" class="nav-link">{{ link.text }}</router-link>
-              </li>
-          </ul>
+      <Burger @toggle="handleMenuToggle" />
+
+      <nav 
+        class="header__nav" 
+        :class="{ 'header__nav--active': isMenuOpen }"
+        aria-label="Основная навигация"
+      >
+        <ul class="header__nav-list">
+          <li 
+            v-for="link in links" 
+            :key="link.url" 
+            class="header__nav-item"
+          >
+            <router-link 
+              :to="link.url" 
+              class="nav-link"
+              :aria-current="link.url === $route.path ? 'page' : null"
+              @click="closeMenu"
+            >
+              {{ link.text }}
+            </router-link>
+          </li>
+        </ul>
       </nav>
+    </div>
   </header>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { Logo, Burger } from '@/shared/components';
 
-import { Logo } from '@/shared/components'; // Убедитесь, что путь к компоненту Logo правильный
+const route = useRoute();
+const isMenuOpen = ref(false);
 
-const router = useRouter();
-  const links = [
-    { text: 'Главная', url: '/' },
-    { text: 'О проекте', url: '/about' },
-    { text: 'Настройка', url: '/settings' }
-  ];
+const logoPath = ref('./src/app/assets/logo.jpg');
+const logoAlt = ref('Сервис ToDo');
+const logoWidth = ref('200px');
+const logoHeight = ref('50px');
+
+const links = [
+  { text: 'Главная', url: '/' },
+  { text: 'О проекте', url: '/about' },
+  { text: 'Настройка', url: '/settings' }
+];
+
+const handleMenuToggle = (open) => {
+  isMenuOpen.value = open;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
+
+const activeLink = computed(() => links.find(link => link.url === route.path));
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .header {
-  z-index: 1000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
+  padding: 1rem 2rem;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  position: fixed;
+  width: 100%;
+  top:0;
+  left: 0;
   background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  position: relative;
-}
-
-.header-logo {
-  display: flex;
-  align-items: center;
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-}
-
-.nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-item {
-  margin: 0;
+  
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  &__logo {
+    z-index: 10000;
+  }
+  
+  &__nav {
+    &-list {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    @media (max-width: 768px) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #fff;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      
+      &--active {
+        transform: translateX(0);
+      }
+      
+      &-list {
+        flex-direction: column;
+        gap: 30px;
+      }
+    }
+  }
 }
 
 .nav-link {
   text-decoration: none;
   color: #333;
-  font-size: 1em;
-  transition: color 0.3s;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 1rem;
+  
+  &:hover {
+    color: #ff365f;
+  }
+  
+  &[aria-current="page"] {
+    color: #ff365f;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
-.nav-link:hover {
-  color: #007bff;
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    
+    &__logo {
+      img {
+        width: 150px;
+        height: auto;
+      }
+    }
+  }
+  
+  .header__nav:not(.header__nav--active) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__logo img {
+    width: 120px;
+  }
 }
 </style>

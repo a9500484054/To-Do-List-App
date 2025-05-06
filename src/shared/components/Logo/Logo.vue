@@ -1,5 +1,5 @@
 <template>
-    <div class="logo" :style="{ width: size, height: size }">
+    <div class="logo" :style="{ width: width, height: height }">
       <img
         :src="src"
         :alt="alt"
@@ -24,10 +24,15 @@
       default: 'Logo',
       description: 'Альтернативный текст для изображения'
     },
-    size: {
+    width: {
       type: String,
       default: '50px',
-      description: 'Размер логотипа (например, "50px", "100px")'
+      description: 'Размер логотипа (например, "100px")'
+    },
+    height: {
+      type: String,
+      default: '50px',
+      description: 'Размер логотипа (например, "50px")'
     }
   });
   </script>

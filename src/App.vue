@@ -1,8 +1,8 @@
 <template>
-  <div id="app" class="">
+  <div class="pt-5"> 
     <Header />
-    <router-view />
   </div>
+  <router-view class="pt-5"/>
 </template>
 
 <script setup>
